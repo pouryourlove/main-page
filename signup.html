@@ -7,15 +7,22 @@
     <title>Document</title>
 </head>
 <body>
+        <nav class="navbar">
+            <div class="navdiv">
+                <div class="logo">
+                    <a href="#">MovieMemo</a>
+                </div>
+            </div>
+        </nav>
  
         <div class="wrapper">
-            <h1>Sign up</h1>
-            <form action="#">
-                <input type="text" placeholder="id"><br>
-                <input type="password" placeholder="password"><br>
-                <input type="password" placeholder="Re-enter"><br>
-                <input type="text" placeholder="username"><br>
-                <button type="submit">가입하기</button>
+            <h1>회원가입</h1>
+            <form action="#" method="POST">
+                <input type="text" id="user-id" name="user-id" placeholder="아이디"><br>
+                <input type="password" id="password" name="password" placeholder="비밀번호"><br>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인"><br>
+                <input type="text" id="username" name="username" placeholder="닉네임"><br>
+                <button class="signup-btn"type="submit">가입하기</button>
             </form>
         </div>
 
