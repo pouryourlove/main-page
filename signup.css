@@ -95,9 +95,10 @@ form input {
     background-color: #B20710
 }
 
-
-    
-
+.signup-btn:hover {
+    background-color: #8C0610;
+    /* Slightly darker shade */
+}
 
 input:focus{
     border: 1px solid rgb(192, 192, 192)
