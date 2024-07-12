@@ -64,28 +64,23 @@ document.getElementById('login-form').addEventListener('submit', async function(
   
 })
 
-//poster api - 액션장르
-
-async function fetchActionData() {
+async function fetchDataByGenre(genre, sectionClass){
   const apiKey = 'BNUTWI8LOC2C99593QD4';
   const listCount = 20;
-  const apiUrl = `http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&detail=Y&genre=액션&sort=prodYear,1&listCount=${listCount}&ServiceKey=${apiKey}`;
-  
-  try {
+  const apiUrl = `http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&detail=Y&genre=${genre}&sort=prodYear,1&listCount=${listCount}&ServiceKey=${apiKey}`;
+
+  try{
     const response = await axios.get(apiUrl);
     const movies = response.data.Data[0].Result;
 
-    const moviesWithPosters = movies.filter(movie => movie.posters !== "")
+    const moviesWithPosters = movies.filter(movie => movie.posters !== "");
 
-
-    moviesWithPosters
-    .forEach((movie)=>{
+    moviesWithPosters.forEach((movie) => {
       //posters into an array
-      const posterUrls = movie.posters.split('|').map(url=>url.trim());
-      const firstPosterUrl = posterUrls.length > 0 ? posterUrls[0] : null;
-      console.log(firstPosterUrl)
-      dynamicSlides(firstPosterUrl)
-    })
+      const posterUrls = movie.posters.split('|').map(url => url.trim());
+      const firstPosterUrl = posterUrls.length>0?posterUrls[0]:null;
+      dynamicSlides(firstPosterUrl,sectionClass)
+    });
 
     const secondSwiper = new Swiper(".second-swiper", {
       slidesPerView: 6,
@@ -96,50 +91,45 @@ async function fetchActionData() {
       prevEl: ".swiper-button-prev",
       },
     });
-    
-    
-    // Process the response data as needed
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    // Handle errors
+  }catch(error){
+    console.log(error)
   }
 }
 
-function dynamicSlides(url){
-  const swiperWrapper = document.querySelector('.action-section .swiper-wrapper');
-
-  //create swiper slide element
-  const swiperSlide = document.createElement('div');
-  swiperSlide.classList.add('swiper-slide');
-
-  //create card container
-  const cardContainer = document.createElement('div')
-  cardContainer.classList.add('card-container');
-
-  //create card content
-  const cardContent = document.createElement('div')
-  cardContent.classList.add('card-content')
-
-  //create image element
-  const image = document.createElement('img');
-  image.src = url; 
-  image.alt = 'poster'
-
-  //append image to card content
-  cardContent.appendChild(image);
-
-  //append cardContent to card container
-  cardContainer.appendChild(cardContent);
-
-  //append cardContainer to swiperSlide
-  swiperSlide.appendChild(cardContainer)
-
-  //append swiperSlide to swiper wrapper
-  swiperWrapper.appendChild(swiperSlide)
-
-  
+function dynamicSlides(url, sectionClass){
+  const swiperWrapper = document.querySelector(`.${sectionClass} .swiper-wrapper`);
+   // Create swiper slide element
+   const swiperSlide = document.createElement('div');
+   swiperSlide.classList.add('swiper-slide');
+ 
+   // Create card container
+   const cardContainer = document.createElement('div');
+   cardContainer.classList.add('card-container');
+ 
+   // Create card content
+   const cardContent = document.createElement('div');
+   cardContent.classList.add('card-content');
+ 
+   // Create image element
+   const image = document.createElement('img');
+   image.src = url;
+   image.alt = 'poster';
+ 
+   // Append image to card content
+   cardContent.appendChild(image);
+ 
+   // Append cardContent to card container
+   cardContainer.appendChild(cardContent);
+ 
+   // Append cardContainer to swiperSlide
+   swiperSlide.appendChild(cardContainer);
+ 
+   // Append swiperSlide to swiper wrapper
+   swiperWrapper.appendChild(swiperSlide);
 }
 
-fetchActionData();
+fetchDataByGenre('액션', 'action-section'); // Fetch action genre posters
+fetchDataByGenre('코메디', 'comedy-section'); // Fetch comedy genre posters
+fetchDataByGenre('멜로드라마', 'romance-section'); // Fetch romance genre posters
 
-//poster api - 코미디
+
