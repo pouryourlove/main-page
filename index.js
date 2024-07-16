@@ -21,16 +21,37 @@ const firstSwiper = new Swiper(".first-swiper", {
 });
 
 
-
-
-
-
 // modal
-
 const loginBtn = document.querySelector('#openLoginModal');
 const modal = document.querySelector('.loginModal');
 const closeBtn = document.querySelector('.close');
 const overlay = document.querySelector('.overlay');
+
+function handleSuccessfulLogin() {
+  localStorage.setItem('isLoggedIn', 'true');
+  updateUIForLoggedInUser;
+}
+
+function updateUIForLoggedInUser() {
+  if (loginBtn) {
+    loginBtn.textContent = "로그아웃";
+    loginBtn.removeEventListener("click", function () {
+      modal.classList.toggle("hidden");
+      overlay.classList.toggle("hidden");
+    });
+    loginBtn.addEventListener("click", function () {
+      localStorage.removeItem("isLoggedIn");
+      window.location.reload();
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  if (isLoggedIn === "true") {
+    updateUIForLoggedInUser();
+  }
+});
 
 loginBtn.addEventListener('click',function(){
   modal.classList.toggle('hidden')
@@ -49,20 +70,14 @@ document.addEventListener('keydown',function(e){
   }
 })
 
-document.getElementById('login-form').addEventListener('submit', async function(e){
-  e.preventDefault();
-  const form = document.getElementById('login-form')
-  const formData = new FormData(form);
 
-  //send post request
-  try {
-    const response = await axios.post("/signin", formData);
-    console.log(response);
-  } catch (error) {
-    console.log(error);
-  }
-  
-})
+
+document.getElementById("login-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  handleSuccessfulLogin(); // Simulate successful login
+  modal.classList.add("hidden"); // Close the modal
+  overlay.classList.add("hidden"); // Hide the overlay
+});
 
 async function fetchDataByGenre(genre, sectionClass){
   const apiKey = 'BNUTWI8LOC2C99593QD4';
